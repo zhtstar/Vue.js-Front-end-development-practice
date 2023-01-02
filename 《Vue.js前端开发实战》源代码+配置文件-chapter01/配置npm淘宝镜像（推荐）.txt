@@ -1,0 +1,10 @@
+﻿
+由于npm命令在国内下载速度很慢，推荐为npm配置淘宝镜像，以加快下载速度。
+
+淘宝镜像是淘宝网为开发者提供的镜像服务器，它会和npm官方的服务器保持同步。
+
+配置镜像：
+npm config set registry https://registry.npm.taobao.org
+
+删除镜像配置：
+npm config delete registry
