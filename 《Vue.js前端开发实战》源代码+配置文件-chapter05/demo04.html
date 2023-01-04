@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Tab导航栏</title>
+  <!-- 设置导航栏外观样式 -->
+  <style>
+    ul, li, h1 {
+      padding: 0;
+      margin: 0; 
+      list-style: none
+    }
+    #app {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+    }
+    ul {
+      width: 200px;
+      flex-direction: column;
+      color: #fff;
+    }
+    li {
+      flex: 1;
+      background: #000;
+      margin:5px auto;
+      text-align: center;
+      line-height: 30px;
+    }
+    .about-detail {
+      flex:1;
+      margin-left: 30px;
+    }
+    .about-detail h1{
+      font-size: 24px;
+      color: blue;
+    }
+  </style>
+
+  <!-- 引入vue.js、vue-router.js -->
+  <script src="vue.js"></script>
+  <script src="vue-router.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <ul>
+      <li>
+        <router-link to="/pay" tag="li">待付款</router-link>
+      </li>
+      <li>
+        <router-link to="/send" tag="li">待发货</router-link>
+      </li>
+      <li>
+        <router-link to="/receive" tag="li">待收货</router-link>
+      </li>
+    </ul>
+    <router-view></router-view>
+  </div>
+
+  <template id="pay-tmp">
+    <div class="about-detail">
+      <h1>以下商品待付款</h1>
+      <!-- 父路由链接/pay加上/food表示子路由链接 -->
+      <router-link to="/pay/food">零食类</router-link> |
+      <router-link to="/pay/cloth">服饰类</router-link>
+      <router-view></router-view>
+    </div>
+  </template>
+
+  <template id="receive-tmp">
+    <div class="about-detail">
+      <h1>以下商品待收货</h1>
+      <p>iPhone 14 pro、Macbook pro</p>
+    </div>
+  </template>
+
+  <template id="send-tmp">
+    <div class="about-detail">
+      <h1>以下商品待发货</h1>
+      <p>《Vue.js》、《时间移民》</p>
+    </div>
+  </template>
+  
+  <script>
+    // 组件的模板对象
+    var pay = { template: '#pay-tmp' }
+    var send = { template: '#send-tmp' }
+    var receive = { template: '#receive-tmp' }
+    // 子路由的组件模板对象
+    //比较复杂，为了代码可读性，直接放外面
+    var food = {
+      template: '<p>红烧牛肉面、可比克</p>'
+    }
+    var cloth = {
+      template: '<p>羽绒服、外套</p>'
+    }
+    var router = new VueRouter({
+      routes: [
+        // 这次设置在首页默认定位到 待付款 链接
+        { path: '/', redirect: '/pay' }, // 路由重定向
+        {
+          path: '/pay',
+          component: pay,
+          children: [
+            { path: 'food', component: food },
+            { path: 'cloth', component: cloth}
+          ]
+        },
+        { path: '/send', component: send },
+        { path: '/receive', component: receive }
+      ]
+    })
+    var vm = new Vue({
+      el: '#app',
+      router  // 挂载路由
+    })
+  </script>
+</body>
+</html>
